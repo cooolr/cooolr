@@ -14,13 +14,13 @@ categories: [python]
 
 ---
 
-- 1. 安装依赖
+- 安装依赖
 
 ``` bash
 pip install elasticsearch
 ```
 
-- 2. 建立连接
+- 建立连接
 
 ``` python
 from elasticsearch import Elasticsearch
@@ -28,7 +28,7 @@ from elasticsearch import Elasticsearch
 es = Elasticsearch(["192.168.1.84"],http_auth=("elastic", "elastic"),port=9200)
 ```
 
-- 3. 写入数据
+- 写入数据
 
 ``` python
 doc = {'id': 1, 'lv_id': 12, 'sentiment':0, 'news_id': 1673578, 'review': '错字连篇，受不了，还真的看完了[笑着哭]', 'keyword': '受不了 错字连篇', 'ner': ''}
@@ -38,7 +38,7 @@ res = es.index(index="match_review", doc_type='review_feature' ,id=doc['news_id'
 print(res['result'])
 ```
 
-- 4. 批量写入
+- 批量写入
 
 ``` python
 from elasticsearch import helpers
@@ -58,14 +58,14 @@ for doc in data:
 helpers.bulk(es, actions)
 ```
 
-- 5. 根据id查询
+- 根据id查询
 
 ``` python3
 news_id = 1673578
 res = es.get(index="match_review", doc_type='review_feature' ,id=news_id)
 ```
 
-- 6. 查询全部
+- 查询全部
 
 ``` python3
 query = es.search(index="match_review", body={"query": {"match_all": {}}}, scroll='5m', size=100)
@@ -78,7 +78,7 @@ query = es.search(index="match_review", body={"query": {"match_all": {}}}, scrol
         res += query_scroll
 ```
 
-- 7. 按条件搜索
+- 按条件搜索
 
 ``` python
 body = {
