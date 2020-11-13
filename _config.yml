@@ -38,7 +38,10 @@ menu:
     url: /pages/about.html
 
 # 点击页面文字冒出特效,不需要请设置为false
-extClickEffect: true
+extClickEffect: false
+
+# 点击页面撒球特效,不需要请设置为false
+extClickspreadEffect: true
 
 # 背景线条特效,不需要请设置为false
 extBackgroundEffect: true
