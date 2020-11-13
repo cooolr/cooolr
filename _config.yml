@@ -40,6 +40,9 @@ menu:
 # 点击页面文字冒出特效,不需要请设置为false
 extClickEffect: true
 
+# 背景线条特效,不需要请设置为false
+extBackgroundEffect: true
+
 # Google Adsense,不需要请设置为false
 # _includes/ext-adsense.html 里面修改为自己的配置
 extAdsense: false

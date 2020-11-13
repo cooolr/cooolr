@@ -13,6 +13,11 @@
 </script>
 {% endif %}
 
+{%- if site.extBackgroundEffect %}
+<!-- 背景线条特效特效 -->
+<script type="text/javascript" color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="{{site.baseurl}}/static/js/canvas-nest.js"></script>
+{% endif %}
+
 {%- if site.extMTA %}
 {% include ext-mta.html %}
 {% endif %}
