@@ -5,11 +5,12 @@ categories: [python]
 ---
 
 - 准备篇
--- 安装: [Elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/5.6/_installation.html)
 
--- 连接: [ElasticSearch Head](https://chrome.google.com/webstore/detail/elasticsearch-head/ffmkiejjmecolpfloofpjologoblkegm)
+安装: [Elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/5.6/_installation.html)
 
--- 建立索引: [详见文末](#)
+连接: [ElasticSearch Head](https://chrome.google.com/webstore/detail/elasticsearch-head/ffmkiejjmecolpfloofpjologoblkegm)
+
+建立索引: [文末附录](#)
 
 ---
 
