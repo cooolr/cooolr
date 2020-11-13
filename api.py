@@ -5,7 +5,11 @@ from flask import Flask
 from flask import request
 from flask import Response
 from urllib.parse import unquote
+from threading import _start_new_thread
 from werkzeug.routing import BaseConverter
+
+def git_pull():
+    os.system("cd /home/pi/tmaize-blog&&sudo git pull origin master")
 
 class RegexConverter(BaseConverter):
     def __init__(self, map, *args):
@@ -18,7 +22,8 @@ app.url_map.converters['regex'] = RegexConverter
 
 @app.route("/webhook", methods=["POST"])
 def webhook():
-    print(1111111111111111111,request.json)
+    if request.json:
+        _start_new_thread(git_pull, ())
     return b'ok.'
 
 @app.route('/posts/<regex(".*"):url>')
