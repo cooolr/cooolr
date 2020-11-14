@@ -11,11 +11,10 @@ title: 友情链接
 地址：{{ site.domainUrl }}{{ site.baseurl }}
 头像：{{ site.domainUrl }}{{ site.baseurl }}/static/img/logo.jpg
 ```
-<link rel="stylesheet" href="{{site.baseurl}}/static/css/common.css?t={{buildAt}}">
 <ul>
   {%- for link in site.links %}
   <li>
-    <p><img class="logo" src="{{ link.headurl }}" /><a href="{{ link.url }}" title="{{ link.desc }}" target="_blank" >{{ link.title }}</a></p>
+    <p><img class="logo" style="width: 40px;height: 40px;cursor: pointer;border-radius: 50%;flex-shrink: 0;margin-right: 10px;-webkit-user-select:none;user-select: none;box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);transition: transform 500ms ease-in-out;"src="{{ link.headurl }}" /><a href="{{ link.url }}" title="{{ link.desc }}" target="_blank" >{{ link.title }}</a></p>
   </li>
   {%- endfor %}
 </ul>
