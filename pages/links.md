@@ -23,8 +23,8 @@ title: 友情链接
     <a style="margin-right: 10px;" href="{{ link.url }}" title="{{ link.desc }}" target="_blank" >{{ link.title }}</a>
     </td>
     <td>
-    </td>
     123456789
+    </td>
     </tr>
     </table>
     </p>
