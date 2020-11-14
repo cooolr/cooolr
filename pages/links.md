@@ -13,9 +13,11 @@ title: 友情链接
 ```
 <ul>
   {%- for link in site.links %}
+  <li>
     <p>
     <img style="margin-left: 10px;width: 40px;height: 40px;border-radius: 50%" src="{{ link.headurl }}" />
-    <a style="text-align:left;float:left" href="{{ link.url }}" title="{{ link.desc }}" target="_blank" >{{ link.title }}</a>
+    <sup><a style="text-align:left;float:left" href="{{ link.url }}" title="{{ link.desc }}" target="_blank" >{{ link.title }}</a></sup>
     </p>
+  </li>
   {%- endfor %}
 </ul>
