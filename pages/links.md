@@ -19,8 +19,6 @@ title: 友情链接
     <td>
     <img style="width: 40px;height: 40px;border-radius: 50%;box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);vertical-align: middle;" src="{{ link.headurl }}" />
     </td>
-    </tr>
-    <tr>
     <td>
     <a href="{{ link.url }}" title="{{ link.desc }}" target="_blank" >{{ link.title }}</a>
     </td>
