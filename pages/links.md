@@ -11,7 +11,7 @@ title: 友情链接
 地址：{{ site.domainUrl }}{{ site.baseurl }}
 头像：{{ site.domainUrl }}{{ site.baseurl }}/static/img/logo.jpg
 ```
-
+<link rel="stylesheet" href="{{site.baseurl}}/static/css/common.css?t={{buildAt}}">
 <ul>
   {%- for link in site.links %}
   <li>
