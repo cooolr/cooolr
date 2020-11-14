@@ -26,7 +26,7 @@ def webhook():
         _start_new_thread(git_pull, ())
     return b'ok.'
 
-@app.route('/posts/<regex(".*"):url>')
+@app.route('/_posts/<regex(".*"):url>')
 def posts(url):
     filename = f"posts/{unquote(url)}"
     if not os.path.exists(filename):
