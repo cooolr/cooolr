@@ -63,11 +63,9 @@ extMath: false
 # 友情链接
 links:
   - title: 海森堡测不准面包
-    url: https://nkiiiiid.github.io
-  - title: Mind Hacks
-    url: http://mindhacks.cn
-  - title: 知青
-    url: https://vince-lau.github.io
-  - title: TMaize Blog
-    url: https://blog.tmaize.net
+    url: https://nkiiiiid.gitee.io
+    headurl: https://nkiiiiid.gitee.io/img/head.jpg
+  - title: UTOPIA
+    url: https://ishya.top
+    headurl: https://cdn.jsdelivr.net/gh/ukityh/ukityh.github.io@master/imgs/avatar.jpg
 
