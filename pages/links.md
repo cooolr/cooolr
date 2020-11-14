@@ -19,7 +19,7 @@ title: 友情链接
     <td>
     <img style="margin-left: 10px;width: 40px;height: 40px;border-radius: 50%" src="{{ link.headurl }}" />
     </td>
-    <td align="left" valign="middle" style="text-align:left;float:left">
+    <td>
     <a style="text-align:left;float:left" href="{{ link.url }}" title="{{ link.desc }}" target="_blank" >{{ link.title }}</a>
     </td>
     </tr>
