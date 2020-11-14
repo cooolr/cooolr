@@ -15,7 +15,7 @@ title: 友情链接
   {%- for link in site.links %}
     <p>
     <table>
-    <tr>
+    <tr style="margin-right: 10px;">
     <td>
     <img style="margin-right: 10px;width: 40px;height: 40px;border-radius: 50%;box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);" src="{{ link.headurl }}" />
     </td>
