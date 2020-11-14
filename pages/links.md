@@ -14,16 +14,8 @@ title: 友情链接
 <ul>
   {%- for link in site.links %}
     <p>
-    <table>
-    <tr>
-    <td>
     <img style="margin-left: 10px;width: 40px;height: 40px;border-radius: 50%" src="{{ link.headurl }}" />
-    </td>
-    <td>
     <a style="text-align:left;float:left" href="{{ link.url }}" title="{{ link.desc }}" target="_blank" >{{ link.title }}</a>
-    </td>
-    </tr>
-    </table>
     </p>
   {%- endfor %}
 </ul>
