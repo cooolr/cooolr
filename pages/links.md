@@ -19,8 +19,8 @@ title: 友情链接
     <td style="margin-left: 10px;">
     <img style="margin-left: 10px;width: 40px;height: 40px;border-radius: 50%;box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);" src="{{ link.headurl }}" />
     </td>
-    <td style="margin-left: 10px;">
-    <a style="align:left" href="{{ link.url }}" title="{{ link.desc }}" target="_blank" >{{ link.title }}</a>
+    <td style="margin-left: 40px;">
+    <a  href="{{ link.url }}" title="{{ link.desc }}" target="_blank" >{{ link.title }}</a>
     </td>
     </tr>
     </table>
