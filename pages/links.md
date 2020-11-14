@@ -17,10 +17,10 @@ title: 友情链接
     <table>
     <tr>
     <td>
-    <img style="margin-left: 10px;width: 40px;height: 40px;border-radius: 50%;box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);" src="{{ link.headurl }}" />
+    <img style="margin-left: 10px;width: 40px;height: 40px;border-radius: 50%" src="{{ link.headurl }}" />
     </td>
     <td align="left" valign="middle" style="text-align:left;float:left">
-    {{ link.title }}
+    <a style="text-align:left;float:left" href="{{ link.url }}" title="{{ link.desc }}" target="_blank" >{{ link.title }}</a>
     </td>
     </tr>
     </table>
