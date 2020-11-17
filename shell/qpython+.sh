@@ -34,7 +34,6 @@ judge() {
     fi
 }
 
-
 apt update
 judge "更新apt软件包列表"
 
