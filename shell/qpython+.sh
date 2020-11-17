@@ -81,4 +81,4 @@ judge "生成/sdcard/qpython/scripts3/qpython+.py"
 python ~/.dropbear/runbear.py
 judge "启动dropbear后台服务"
 
-echo "\n请在qpython运行qpython+.py完成后续配置\n"
+judge "请在qpython运行qpython+.py完成后续配置"
