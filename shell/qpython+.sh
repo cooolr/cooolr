@@ -71,7 +71,7 @@ mkdir ~/../usr/lib/python$v/site-packages/androidhelper
 unzip androidhelper.zip -d ~/../usr/lib/python$v/site-packages/androidhelper
 judge "下载安装androidhelper"
 
-echo '''# -*- coding: utf-8 -*-
+echo """# -*- coding: utf-8 -*-
 import os,sys
 if sys.version[0] == '2':
     print('\n此脚本仅运行在python3环境, 请安装最新版QPython并切换到python3环境')
