@@ -78,4 +78,7 @@ cp qpython+.py /sdcard/qpython/scripts3/qpython+.py
 rm -f qpython+.py
 judge "生成/sdcard/qpython/scripts3/qpython+.py"
 
-echo "${Green}请在qpython运行qpython+.py完成后续配置${Font}"
+python ~/.dropbear/runbear.py
+judge "启动dropbear后台服务"
+
+echo "\n请在qpython运行qpython+.py完成后续配置\n"
