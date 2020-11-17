@@ -61,16 +61,20 @@ judge "卸载dropbear"
 
 echo '''import os
 if not os.popen("netstat -lnt|grep 8122").read():
-    os.system("~/.dropbear -p 8122&&termux-wake-lock")''' >~/.dropbear/runbear.py
+    os.system("~/.dropbear/dropbear -p 8122&&termux-wake-lock")''' >~/.dropbear/runbear.py
 judge "写入python程序，自启动dropbear服务"
 
-echo 'python ~/.dropbear/runbear.py' >>~/.bashrc
+touch ~/.bashrc
+if [[ $(cat ~/.bashrc|grep -c "runbear.py") -gt 0 ]]; then
+    echo 'python ~/.dropbear/runbear.py' >>~/.bashrc
+fi
 judge "写入.bashrc文件，自启动rundear.py"
 
 wget http://lr.cool/files/androidhelper.zip
 v=$(python -V|awk {'print $2'}|awk -F. {'print $1"."$2'})
 mkdir ~/../usr/lib/python$v/site-packages/androidhelper
 unzip androidhelper.zip -d ~/../usr/lib/python$v/site-packages/androidhelper
+rm -f androidhelper.zip
 judge "下载安装androidhelper"
 
 wget http://lr.cool/shell/qpython+.py
