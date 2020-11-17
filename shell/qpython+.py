@@ -20,4 +20,4 @@ text = text.replace('. $DIR/init.sh && $DIR/python3-android5 "$@"', 'echo $AP_PO
 with open(runfile, 'w') as f:
     f.write(text)
 
-print('\n配置完成，编辑器运行环境已切换到termux, 来回切换python版本即可还原')
+print('\n恭喜！配置成功，编辑器运行模式已切换到termux环境\n\nQPython设置来回切换python版本即可还原\n')
