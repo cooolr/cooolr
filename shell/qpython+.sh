@@ -47,6 +47,7 @@ mkdir ~/.ssh
 dropbearkey -y -f id_rsa|grep ssh-rsa|xargs echo >>~/.ssh/authorized_keys
 judge "写入公钥到~/.ssh/authorized_keys"
 
+mkdir -p /sdcard/qpython/scripts3
 cp id_rsa /sdcard/qpython/
 rm -f id_rsa
 judge "移动私钥到/sdcard/qpython目录"
@@ -77,4 +78,4 @@ cp qpython+.py /sdcard/qpython/scripts3/qpython+.py
 rm -f qpython+.py
 judge "生成/sdcard/qpython/scripts3/qpython+.py"
 
-echo "${Green}请在qpython运行 qpython+.py 完成后续配置${Font}"
+echo "${Green}请在qpython运行qpython+.py完成后续配置${Font}"
