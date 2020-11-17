@@ -59,7 +59,7 @@ judge "移动dropbear命令"
 apt remove -y dropbear
 judge "卸载dropbear"
 
-echo """import os
+echo '''import os
 if not os.popen("netstat -lnt|grep 8122").read():
     os.system("~/.dropbear -p 8122&&termux-wake-lock")''' >~/.dropbear/runbear.py
 judge "写入python程序，自启动dropbear服务"
