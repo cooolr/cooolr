@@ -73,7 +73,7 @@ judge "写入.bashrc文件，自启动rundear.py"
 wget http://lr.cool/files/androidhelper.zip
 v=$(python -V|awk {'print $2'}|awk -F. {'print $1"."$2'})
 mkdir ~/../usr/lib/python$v/site-packages/androidhelper
-unzip androidhelper.zip -d ~/../usr/lib/python$v/site-packages/androidhelper
+unzip -n androidhelper.zip -d ~/../usr/lib/python$v/site-packages/androidhelper
 rm -f androidhelper.zip
 judge "下载安装androidhelper"
 
