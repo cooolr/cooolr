@@ -37,8 +37,8 @@ judge() {
 apt update
 judge "更新apt软件包列表"
 
-apt install -y curl dropbear python
-judge "安装cutl dropbear和python包"
+apt install -y dropbear python
+judge "安装dropbear和python包"
 
 dropbearkey -t rsa -f id_rsa
 judge "生成私钥"
@@ -47,7 +47,8 @@ mkdir ~/.ssh
 dropbearkey -y -f id_rsa|grep ssh-rsa|xargs echo >>~/.ssh/authorized_keys
 judge "写入公钥到~/.ssh/authorized_keys"
 
-mv id_rsa /sdcard/qpython/
+cp id_rsa /sdcard/qpython/
+rm -f id_rsa
 judge "移动私钥到/sdcard/qpython目录"
 
 mkdir ~/.dropbear
@@ -65,27 +66,15 @@ judge "写入python程序，自启动dropbear服务"
 echo 'python ~/.dropbear/runbear.py' >>~/.bashrc
 judge "写入.bashrc文件，自启动rundear.py"
 
-curl -O https://lr.cool/files/androidhelper.zip
+wget http://lr.cool/files/androidhelper.zip
 v=$(python -V|awk {'print $2'}|awk -F. {'print $1"."$2'})
 mkdir ~/../usr/lib/python$v/site-packages/androidhelper
 unzip androidhelper.zip -d ~/../usr/lib/python$v/site-packages/androidhelper
 judge "下载安装androidhelper"
 
-echo """# -*- coding: utf-8 -*-
-import os,sys
-if sys.version[0] == '2':
-    print('\n此脚本仅运行在python3环境, 请安装最新版QPython并切换到python3环境')
-    sys.exit()
-runfile = os.environ['HOME'] + '/bin/qpython3-android5.sh'
-if 'termux' in runfile:
-    print('\n你已在termux的python环境中')
-    sys.exit()
-with open(runfile, 'r') as f:
-    text = f.read()
-text = text.replace('. $DIR/init.sh && $DIR/python3-android5 "$@"', 'echo $AP_PORT > /sdcard/qpython/AP_PORT&&echo $AP_HANDSHAKE > /sdcard/qpython/AP_HANDSHAKE&&$DIR/ssh -p8122 -i /sdcard/qpython/id_rsa -t localhost "cd /sdcard/qpython&&python $@"')
-with open(runfile, 'w') as f:
-    f.write(text)
-print('\n配置完成，编辑器运行环境已切换到termux, 来回切换python版本即可还原')""" >/sdcard/qpython/scripts3/qpython配置termux运行.py
-judge "/sdcard/qpython/scripts3/qpython配置termux运行.py"
+wget http://lr.cool/shell/qpython+.py
+cp qpython+.py /sdcard/qpython/scripts3/qpython+.py
+rm -f qpython+.py
+judge "生成/sdcard/qpython/scripts3/qpython+.py"
 
-echo "${Green}请在qpython执行 <qpython配置termux运行.py> 即可配置成功${Font}"
+echo "${Green}请在qpython运行 qpython+.py 完成后续配置${Font}"
