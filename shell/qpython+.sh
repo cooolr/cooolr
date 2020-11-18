@@ -37,8 +37,8 @@ judge() {
 apt update
 judge "更新apt软件包列表"
 
-apt install -y dropbear python
-judge "安装dropbear和python包"
+apt install -y wget dropbear python
+judge "安装wget dropbear和python包"
 
 dropbearkey -t rsa -f id_rsa
 judge "生成私钥"
@@ -65,7 +65,7 @@ if not os.popen("netstat -lnt|grep 8122").read():
 judge "写入python程序，自启动dropbear服务"
 
 touch ~/.bashrc
-if [[ $(cat ~/.bashrc|grep -c "runbear.py") -gt 0 ]]; then
+if [[ $(cat ~/.bashrc|grep -c "runbear.py") -lt 1 ]]; then
     echo 'python ~/.dropbear/runbear.py' >>~/.bashrc
 fi
 judge "写入.bashrc文件，自启动rundear.py"
