@@ -7,6 +7,10 @@ if sys.version[0] == '2':
     sys.exit()
 
 runfile = os.environ['HOME'] + '/bin/qpython3-android5.sh'
+dropbear = os.environ['HOME']+"/dropbear"
+
+if os.path.exists(dropbear):
+    os.system("rm -rf "+dropbear)
 
 if 'termux' in runfile:
     print(sys.version)
