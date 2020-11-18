@@ -79,7 +79,8 @@ install () {
 
     touch ~/.bashrc
     if [[ $(cat ~/.bashrc|grep -c "runbear.py") -lt 1 ]]; then
-        echo 'python ~\\.dropbear\\runbear.py' >>~/.bashrc
+        echo 'python ~/.dropbear/runbear.py' >>~/.bashrc
+        echo 'python ~/.dropbear/runbear.py' >~/.dropbear/.bashrc
     fi
     judge "写入.bashrc文件，自启动rundear.py"
 
@@ -106,6 +107,7 @@ uninstall () {
     sed -i 's/python ~\\\\.dropbear\\\\runbear.py/#/g' ~/.bashrc
     v=$(python -V|awk {'print $2'}|awk -F. {'print $1"."$2'})
     rm -rf ~/../usr/lib/python$v/site-packages/androidhelper
+    sed -i $(cat ~/.bashrc|grep -nf ~/.dropbear/.bashrc|awk -F: '{print $1}')'d' ~/.bashrc
     sed -i $(cat ~/.ssh/authorized_keys|grep -nf /sdcard/qpython/id_rsa.pub|awk -F: '{print $1}')'d' .ssh/authorized_keys
     rm -f /sdcard/qpython/id_rsa
     rm -f /sdcard/qpython/id_rsa.pub
