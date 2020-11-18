@@ -142,3 +142,5 @@ menu() {
         ;;
     esac
 }
+
+menu
