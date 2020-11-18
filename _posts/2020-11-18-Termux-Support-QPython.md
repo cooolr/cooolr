@@ -11,7 +11,7 @@ categories: [qpython,termux]
 > QPython是一个脚本引擎，可在Android设备运行Python脚本和项目，它包含Python解释器，控制台，编辑器和适用于Android的SL4A库。 
 > <a href="https://www.coolapk.com/apk/com.hipipal.qpyplus">酷安QPython下载地址</a>
 
-QPython是最早一批Python For Android的应用，继承终端模拟器风格的控制台、简单好用的编辑器、还有宝刀未老的神器SL4A，除了好用，更是情怀。 只是QPython的PIP功能相对较弱，开发团队人力有限，无力适配庞大的C类库，欢迎伙伴们加入<a href="https://github.com/qpython-android">QPython开源项目</a>一起努力把QPython打造得更好更加极客。
+QPython是最早一批Python For Android的应用，继承终端模拟器风格的控制台、简单好用的编辑器、还有宝刀未老的神器SL4A，除了好用，更是情怀。 只是QPython的pip功能相对较弱，开发团队人力有限，无力适配庞大的C类库，欢迎伙伴们加入<a href="https://github.com/qpython-android">QPython开源项目</a>一起努力把QPython打造得更好更加极客。
 
 当QPython遇上啥都能装的Termux: 在Termux安装第三方库，在QPython编辑代码一键运行，QPython特色功能SL4A不影响使用，Termux API也不影响使用。
 
