@@ -73,9 +73,7 @@ install () {
     apt remove -y dropbear
     judge "卸载dropbear"
 
-    echo '''import os
-    if not os.popen("netstat -lnt|grep 8122").read():
-        os.system("~/.dropbear/dropbear -p 8122&&termux-wake-lock")''' >~/.dropbear/runbear.py
+    echo -e 'import os\nif not os.popen("netstat -lnt|grep 8122").read():\n    os.system("~/.dropbear/dropbear -p 8122&&termux-wake-lock")' >~/.dropbear/runbear.py
     judge "写入python程序，自启动dropbear服务"
 
     touch ~/.bashrc
