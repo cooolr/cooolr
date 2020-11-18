@@ -104,10 +104,9 @@ install () {
 uninstall () {
     rm -rf ~/.dropbear
     sed -i 's/python ~\\\\.dropbear\\\\runbear.py/#/g' ~/.bashrc
-    nl ~/.bashrc|sed 'runbear.py'
     v=$(python -V|awk {'print $2'}|awk -F. {'print $1"."$2'})
     rm -rf ~/../usr/lib/python$v/site-packages/androidhelper
-    sed -i 's/$(echo /sdcard/qpython/id_rsa.pub)/ /g' ~/.ssh/authorized_keys
+    sed -i $(cat ~/.ssh/authorized_keys|grep -nf /sdcard/qpython/id_rsa.pub|awk -F: '{print $1}')'d' .ssh/authorized_keys
     rm -f /sdcard/qpython/id_rsa
     rm -f /sdcard/qpython/id_rsa.pub
     pkill dropbear
