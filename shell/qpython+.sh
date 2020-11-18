@@ -52,7 +52,7 @@ install () {
     judge "更新apt软件包列表"
 
     apt install -y wget dropbear python
-    judge "安装wget dropbear和python包"
+    judge "安装wget dropbear python"
 
     dropbearkey -t rsa -f id_rsa
     judge "生成私钥"
