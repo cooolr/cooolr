@@ -63,8 +63,9 @@ install () {
 
     mkdir -p /sdcard/qpython/scripts3
     cp id_rsa /sdcard/qpython/
+    dropbearkey -y -f id_rsa|grep ssh-rsa|xargs echo >/sdcard/qpython/id_rsa.pub
     rm -f id_rsa
-    judge "移动私钥到/sdcard/qpython目录"
+    judge "移动密钥到/sdcard/qpython目录"
 
     mkdir ~/.dropbear
     cp ~/../usr/bin/dropbearmulti ~/.dropbear/dropbear
@@ -106,7 +107,9 @@ uninstall () {
     nl ~/.bashrc|sed 'runbear.py'
     v=$(python -V|awk {'print $2'}|awk -F. {'print $1"."$2'})
     rm -rf ~/../usr/lib/python$v/site-packages/androidhelper
+    sed 's/$(echo /sdcard/qpython/id_rsa.pub)/ /g' ~/.ssh/authorized_keys
     rm -f /sdcard/qpython/id_rsa
+    rm -f /sdcard/qpython/id_rsa.pub
     pkill dropbear
     termux-wake-unlock
     judge "卸载TSQ"
