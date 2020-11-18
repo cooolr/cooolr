@@ -29,3 +29,9 @@ wget lr.cool/shell/tsq.sh && bash tsq.sh
 ![03.png](03.png)
 
 ![04.png](04.png)
+
+![05.png](05.png)
+
+![06.png](06.png)
+
+![07.png](07.png)
