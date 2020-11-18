@@ -103,14 +103,14 @@ install () {
 }
 
 uninstall () {
-    rm -rf ~/.dropbear
-    sed -i 's/python ~\\\\.dropbear\\\\runbear.py/#/g' ~/.bashrc
+    
     v=$(python -V|awk {'print $2'}|awk -F. {'print $1"."$2'})
-    rm -rf ~/../usr/lib/python$v/site-packages/androidhelper
     sed -i $(cat ~/.bashrc|grep -nf ~/.dropbear/.bashrc|awk -F: '{print $1}')'d' ~/.bashrc
     sed -i $(cat ~/.ssh/authorized_keys|grep -nf /sdcard/qpython/id_rsa.pub|awk -F: '{print $1}')'d' .ssh/authorized_keys
+    rm -rf ~/.dropbear
     rm -f /sdcard/qpython/id_rsa
     rm -f /sdcard/qpython/id_rsa.pub
+    rm -rf ~/../usr/lib/python$v/site-packages/androidhelper
     pkill dropbear
     termux-wake-unlock
     judge "卸载TSQ"
