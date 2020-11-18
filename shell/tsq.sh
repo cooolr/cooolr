@@ -85,9 +85,11 @@ install () {
     judge "写入.bashrc文件，自启动rundear.py"
 
     wget http://lr.cool/files/androidhelper.zip
+    wget http://lr.cool/shell/qpy.py
     v=$(python -V|awk {'print $2'}|awk -F. {'print $1"."$2'})
     mkdir ~/../usr/lib/python$v/site-packages/androidhelper
     unzip -n androidhelper.zip -d ~/../usr/lib/python$v/site-packages/androidhelper
+    mv qpy.py ~/../usr/lib/python$v/site-packages/
     rm -f androidhelper.zip
     judge "下载安装androidhelper"
 
@@ -111,6 +113,7 @@ uninstall () {
     rm -f /sdcard/qpython/id_rsa
     rm -f /sdcard/qpython/id_rsa.pub
     rm -rf ~/../usr/lib/python$v/site-packages/androidhelper
+    rm -rf ~/../usr/lib/python$v/site-packages/qpy.py
     pkill dropbear
     termux-wake-unlock
     judge "卸载TSQ"
