@@ -9,7 +9,8 @@ if sys.version[0] == '2':
 runfile = os.environ['HOME'] + '/bin/qpython3-android5.sh'
 
 if 'termux' in runfile:
-    print('\n你已在termux的python环境中')
+    print(sys.version)
+    print('\n你已在termux环境中')
     sys.exit()
 
 with open(runfile, 'r') as f:

@@ -34,55 +34,111 @@ judge() {
     fi
 }
 
-apt update
-judge "更新apt软件包列表"
+is_sdcard() {
+    if [[ $(ls /sdcard|wc -l) -lt 1 ]]; then
+        echo -e "${Error} ${RedBG} 未获取读写手机存储权限，请在设置授权后重新执行脚本 ${Font}"
+        exit 1
+    else
+        echo -e "${OK} ${GreenBG} 已获取读写手机存储权限，进入安装流程 ${Font}"
+        sleep 3
+        
+    fi
+}
 
-apt install -y wget dropbear python
-judge "安装wget dropbear和python包"
+install () {
+    is_sdcard
 
-dropbearkey -t rsa -f id_rsa
-judge "生成私钥"
+    apt update
+    judge "更新apt软件包列表"
 
-mkdir ~/.ssh
-dropbearkey -y -f id_rsa|grep ssh-rsa|xargs echo >>~/.ssh/authorized_keys
-judge "写入公钥到~/.ssh/authorized_keys"
+    apt install -y wget dropbear python
+    judge "安装wget dropbear和python包"
 
-mkdir -p /sdcard/qpython/scripts3
-cp id_rsa /sdcard/qpython/
-rm -f id_rsa
-judge "移动私钥到/sdcard/qpython目录"
+    dropbearkey -t rsa -f id_rsa
+    judge "生成私钥"
 
-mkdir ~/.dropbear
-cp ~/../usr/bin/dropbearmulti ~/.dropbear/dropbear
-judge "移动dropbear命令"
+    mkdir ~/.ssh
+    dropbearkey -y -f id_rsa|grep ssh-rsa|xargs echo >>~/.ssh/authorized_keys
+    judge "写入公钥到~/.ssh/authorized_keys"
 
-apt remove -y dropbear
-judge "卸载dropbear"
+    mkdir -p /sdcard/qpython/scripts3
+    cp id_rsa /sdcard/qpython/
+    rm -f id_rsa
+    judge "移动私钥到/sdcard/qpython目录"
 
-echo '''import os
-if not os.popen("netstat -lnt|grep 8122").read():
-    os.system("~/.dropbear/dropbear -p 8122&&termux-wake-lock")''' >~/.dropbear/runbear.py
-judge "写入python程序，自启动dropbear服务"
+    mkdir ~/.dropbear
+    cp ~/../usr/bin/dropbearmulti ~/.dropbear/dropbear
+    judge "移动dropbear命令"
 
-touch ~/.bashrc
-if [[ $(cat ~/.bashrc|grep -c "runbear.py") -lt 1 ]]; then
-    echo 'python ~/.dropbear/runbear.py' >>~/.bashrc
-fi
-judge "写入.bashrc文件，自启动rundear.py"
+    apt remove -y dropbear
+    judge "卸载dropbear"
 
-wget http://lr.cool/files/androidhelper.zip
-v=$(python -V|awk {'print $2'}|awk -F. {'print $1"."$2'})
-mkdir ~/../usr/lib/python$v/site-packages/androidhelper
-unzip -n androidhelper.zip -d ~/../usr/lib/python$v/site-packages/androidhelper
-rm -f androidhelper.zip
-judge "下载安装androidhelper"
+    echo '''import os
+    if not os.popen("netstat -lnt|grep 8122").read():
+        os.system("~/.dropbear/dropbear -p 8122&&termux-wake-lock")''' >~/.dropbear/runbear.py
+    judge "写入python程序，自启动dropbear服务"
 
-wget http://lr.cool/shell/qpython+.py
-cp qpython+.py /sdcard/qpython/scripts3/qpython+.py
-rm -f qpython+.py
-judge "生成/sdcard/qpython/scripts3/qpython+.py"
+    touch ~/.bashrc
+    if [[ $(cat ~/.bashrc|grep -c "runbear.py") -lt 1 ]]; then
+        echo 'python ~\\.dropbear\\runbear.py' >>~/.bashrc
+    fi
+    judge "写入.bashrc文件，自启动rundear.py"
 
-python ~/.dropbear/runbear.py
-judge "启动dropbear后台服务"
+    wget http://lr.cool/files/androidhelper.zip
+    v=$(python -V|awk {'print $2'}|awk -F. {'print $1"."$2'})
+    mkdir ~/../usr/lib/python$v/site-packages/androidhelper
+    unzip -n androidhelper.zip -d ~/../usr/lib/python$v/site-packages/androidhelper
+    rm -f androidhelper.zip
+    judge "下载安装androidhelper"
 
-judge "请在qpython运行qpython+.py完成后续配置"
+    wget http://lr.cool/shell/qpython+.py
+    cp qpython+.py /sdcard/qpython/scripts3/qpython+.py
+    rm -f qpython+.py
+    judge "生成/sdcard/qpython/scripts3/qpython+.py"
+
+    python ~/.dropbear/runbear.py
+    judge "启动dropbear后台服务"
+
+    judge "请在qpython运行qpython+.py完成后续配置"
+}
+
+uninstall () {
+    rm -rf ~/.dropbear
+    sed -i 's/python ~\\\\.dropbear\\\\runbear.py/#/g' ~/.bashrc
+    nl ~/.bashrc|sed 'runbear.py'
+    v=$(python -V|awk {'print $2'}|awk -F. {'print $1"."$2'})
+    rm -rf ~/../usr/lib/python$v/site-packages/androidhelper
+    rm -f /sdcard/qpython/id_rsa
+    pkill dropbear
+    termux-wake-unlock
+    judge "卸载TSQ"
+
+}
+
+menu() {
+    echo -e "\t Termux Support QPython[TSQ] 安装管理脚本 ${Red}[${shell_version}]${Font}"
+    echo -e "\t---authored by lr---"
+    echo -e "\tQPython编程交流群: 540717901\n"
+
+    echo -e "—————————————— 安装向导 ——————————————"""
+    echo -e "${Green}1.${Font} 安装TSQ"
+    echo -e "${Green}2.${Font} 卸载TSQ"
+    echo -e "${Green}3.${Font} 退出 \n"
+
+    read -rp "请输入数字：" menu_num
+    case $menu_num in
+    1)
+        install
+        ;;
+    2)
+        uninstall
+        ;;
+
+    3)
+        exit 0
+        ;;
+    *)
+        echo -e "${RedBG}请输入正确的数字${Font}"
+        ;;
+    esac
+}
