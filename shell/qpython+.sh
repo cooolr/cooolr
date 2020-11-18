@@ -116,9 +116,9 @@ uninstall () {
 }
 
 menu() {
-    echo -e "\t Termux Support QPython[TSQ] 安装管理脚本 ${Red}[${shell_version}]${Font}"
-    echo -e "\t---authored by lr---"
-    echo -e "\tQPython编程交流群: 540717901\n"
+    echo -e "Termux Support QPython[TSQ] 安装管理脚本 ${Red}[${shell_version}]${Font}"
+    echo -e "---authored by lr---"
+    echo -e "QPython编程交流群: 540717901\n"
 
     echo -e "—————————————— 安装向导 ——————————————"""
     echo -e "${Green}1.${Font} 安装TSQ"
