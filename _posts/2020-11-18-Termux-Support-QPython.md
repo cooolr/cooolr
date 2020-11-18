@@ -1,6 +1,6 @@
 ---
 layout: mypost
-title: QPython+Termux打造Python融合环境
+title: QPython+Termux打造Python编程环境
 categories: [qpython,termux]
 ---
 
