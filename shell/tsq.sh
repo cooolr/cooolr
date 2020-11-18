@@ -69,9 +69,11 @@ install () {
 
     mkdir ~/.dropbear
     cp ~/../usr/bin/dropbearmulti ~/.dropbear/dropbear
+    cp -a /data/data/com.termux/files/usr/etc/dropbear dropbear
     judge "移动dropbear命令"
 
     apt remove -y dropbear
+    mv dropbear /data/data/com.termux/files/usr/etc/dropbear
     judge "卸载dropbear"
 
     echo -e 'import os\nif not os.popen("netstat -lnt|grep 8122").read():\n    os.system("~/.dropbear/dropbear -p 8122&&termux-wake-lock")' >~/.dropbear/runbear.py
