@@ -97,7 +97,7 @@ install () {
     python ~/.dropbear/runbear.py
     judge "启动dropbear后台服务"
 
-    judge "请在qpython运行qpython+.py完成后续配置"
+    echo -e "\n\033[33m请在qpython运行qpython+.py完成后续配置\033[0m\n"
 }
 
 uninstall () {
