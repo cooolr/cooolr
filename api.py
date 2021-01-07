@@ -37,6 +37,10 @@ def posts(url):
         response.headers['content-length'] = os.stat(filename).st_size
         return response
 
+@app.route('/ip')
+def get_ip():
+    return request.remote_addr+'\n'
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=2222)
