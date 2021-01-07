@@ -37,7 +37,7 @@ def posts(url):
         response.headers['content-length'] = os.stat(filename).st_size
         return response
 
-@app.route('/ip')
+@app.route('/')
 def get_ip():
     return request.remote_addr+'\n'
 
