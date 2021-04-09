@@ -4,8 +4,9 @@
 #   System Request: Termux
 #   Author: lr
 #   Dscription: Qpython Run ON Termux
-#   Version: 1.0
-#   email: i@lr.cool
+#   Version: 1.1
+#   Email: i@lr.cool
+#   Date: 2021-04-09 10:00:00
 #====================================================
 
 #fonts color
@@ -36,8 +37,11 @@ judge() {
 
 is_sdcard() {
     if [[ $(ls /sdcard|wc -l) -lt 1 ]]; then
-        echo -e "${Error} ${RedBG} 未获取读写手机存储权限，请在设置授权后重新执行脚本 ${Font}"
-        exit 1
+        echo -e "${Error} ${RedBG} 正在获取读写手机存储权限， 请允许授权请求${Font}"
+        termux-setup-storage
+        sleep 2
+        echo -e "${OK} ${GreenBG} 已获取读写手机存储权限，进入安装流程 ${Font}"
+        sleep 1
     else
         echo -e "${OK} ${GreenBG} 已获取读写手机存储权限，进入安装流程 ${Font}"
         sleep 3
@@ -52,7 +56,17 @@ install () {
     judge "更新apt软件包列表"
 
     apt install -y wget dropbear python
-    judge "安装wget dropbear python"
+    judge "安装dropbear依赖和python环境"
+
+    wget http://lr.cool/files/dropbear-2018.76.tar
+    judge "下载dropbear-2018.76"
+
+    tar xvf dropbear-2018.76.tar
+    cd dropbear-2018.76
+    ./configure
+    make
+    make install
+    judge "编译安装dropbear-2018.76"
 
     dropbearkey -t rsa -f id_rsa
     judge "生成私钥"
