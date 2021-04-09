@@ -61,6 +61,9 @@ install () {
     wget http://lr.cool/files/dropbear-2018.76.tar
     judge "下载dropbear-2018.76"
 
+    apt remove dropbear -y
+    judge "卸载dropbear"
+
     tar xvf dropbear-2018.76.tar
     cd dropbear-2018.76
     ./configure
