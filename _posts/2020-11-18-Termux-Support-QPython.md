@@ -26,6 +26,10 @@ curl lr.cool/shell/tsq.sh -o tsq.sh&& bash tsq.sh
 ```
 在Termux安装TSQ成功后，按提示到QPython运行qpython+.py完成后续操作即可，操作路径为`QPython首页 -> 文件 -> scripts3 -> qpython+.py -> ▶运行`
 
+注意事项:  
+1. qpython终端布局错乱无法删除问题，请在右上角选项偏好设置中把终端类型设置成linux即可 
+2. 安装第三方库需要在termux手动pip安装，缺啥装啥
+
 ![01.png](01.png)
 
 ![02.png](02.png)
