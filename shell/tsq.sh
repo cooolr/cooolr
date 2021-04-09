@@ -36,7 +36,7 @@ judge() {
 }
 
 is_sdcard() {
-    if [[ $(ls /sdcard|wc -l) -lt 1 ]]; then
+    if [[ $(ls /storage/emulated/0|wc -l) -lt 1 ]]; then
         echo -e "${Error} ${RedBG} 获取读写手机存储权限失败，请授权${Font}"
         termux-setup-storage
         sleep 2
@@ -74,8 +74,8 @@ install () {
     ./dropbearkey -y -f /etc/dropbear/dropbear_rsa_host_key|grep ssh-rsa|xargs echo >>~/.ssh/authorized_keys
     judge "写入公钥到~/.ssh/authorized_keys"
 
-    mkdir -p /sdcard/qpython/scripts3
-    cp /etc/dropbear/dropbear_rsa_host_key /sdcard/qpython/id_rsa
+    mkdir -p /storage/emulated/0/qpython/scripts3
+    cp /etc/dropbear/dropbear_rsa_host_key /storage/emulated/0/qpython/id_rsa
     judge "复制私钥到/sdcard/qpython目录"
 
     mkdir ~/.dropbear
@@ -109,7 +109,7 @@ install () {
     judge "下载安装androidhelper"
 
     wget http://lr.cool/shell/qpython+.py
-    cp qpython+.py /sdcard/qpython/scripts3/qpython+.py
+    cp qpython+.py /storage/emulated/0/qpython/scripts3/qpython+.py
     rm -f qpython+.py
     judge "生成/sdcard/qpython/scripts3/qpython+.py"
 
@@ -125,12 +125,12 @@ uninstall () {
     sed -i $(cat ~/.bashrc|grep -nf ~/.dropbear/.bashrc|awk -F: '{print $1}')'d' ~/.bashrc
     sed -i $(cat ~/.ssh/authorized_keys|grep -nf /sdcard/qpython/id_rsa.pub|awk -F: '{print $1}')'d' .ssh/authorized_keys
     rm -rf ~/.dropbear
-    rm -f /sdcard/qpython/id_rsa
-    rm -f /sdcard/qpython/id_rsa.pub
-    rm -rf ~/../usr/lib/python$v/site-packages/androidhelper
-    rm -rf ~/../usr/lib/python$v/site-packages/qpy.py
+    rm -f /storage/emulated/0/qpython/id_rsa
+    rm -rf /usr/lib/python$v/site-packages/androidhelper
+    rm -rf /usr/lib/python$v/dist-packages/androidhelper
+    rm -rf /usr/lib/python$v/site-packages/qpy.py
+    rm -rf /usr/lib/python$v/dist-packages/qpy.py
     pkill dropbear
-    termux-wake-unlock
     judge "卸载TSQ"
 
 }
