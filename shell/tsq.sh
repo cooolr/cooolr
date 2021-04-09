@@ -37,7 +37,7 @@ judge() {
 
 is_sdcard() {
     if [[ $(ls /sdcard|wc -l) -lt 1 ]]; then
-        echo -e "${OK} ${GreenBG} 正在获取读写手机存储权限，请允许授权${Font}"
+        echo -e "${Error} ${RedBG} 获取读写手机存储权限失败，请授权${Font}"
         termux-setup-storage
         sleep 2
         echo -e "${OK} ${GreenBG} 已获取读写手机存储权限，进入安装流程 ${Font}"
@@ -68,19 +68,15 @@ install () {
     cd dropbear-2018.76
     ./configure
     make
-    judge "编译安装dropbear-2018.76"
-
-    ./dropbearkey -t rsa -f id_rsa
-    judge "生成私钥"
+    judge "编译dropbear-2018.76"
 
     mkdir ~/.ssh
-    ./dropbearkey -y -f id_rsa|grep ssh-rsa|xargs echo >>~/.ssh/authorized_keys
+    ./dropbearkey -y -f /etc/dropbear/dropbear_rsa_host_key|grep ssh-rsa|xargs echo >>~/.ssh/authorized_keys
     judge "写入公钥到~/.ssh/authorized_keys"
 
     mkdir -p /sdcard/qpython/scripts3
-    cp id_rsa /sdcard/qpython/
-    rm -f id_rsa
-    judge "移动密钥到/sdcard/qpython目录"
+    cp /etc/dropbear/dropbear_rsa_host_key /sdcard/qpython/id_rsa
+    judge "复制私钥到/sdcard/qpython目录"
 
     mkdir ~/.dropbear
     cp dropbear ~/.dropbear/dropbear
@@ -102,10 +98,13 @@ install () {
 
     wget http://lr.cool/files/androidhelper.zip
     wget http://lr.cool/shell/qpy.py
-    v=$(python -V|awk {'print $2'}|awk -F. {'print $1"."$2'})
-    mkdir ~/../usr/lib/python$v/site-packages/androidhelper
-    unzip -n androidhelper.zip -d ~/../usr/lib/python$v/site-packages/androidhelper
-    mv qpy.py ~/../usr/lib/python$v/site-packages/
+    v=$(python3 -V|awk {'print $2'}|awk -F. {'print $1"."$2'})
+    mkdir -p /usr/lib/python$v/site-packages/androidhelper
+    mkdir -p /usr/lib/python$v/dist-packages/androidhelper
+    unzip -n androidhelper.zip -d /usr/lib/python$v/site-packages/androidhelper
+    unzip -n androidhelper.zip -d /usr/lib/python$v/dist-packages/androidhelper
+    mv qpy.py /usr/lib/python$v/site-packages/
+    mv qpy.py /usr/lib/python$v/dist-packages/
     rm -f androidhelper.zip
     judge "下载安装androidhelper"
 
@@ -114,7 +113,7 @@ install () {
     rm -f qpython+.py
     judge "生成/sdcard/qpython/scripts3/qpython+.py"
 
-    python ~/.dropbear/runbear.py
+    python3 ~/.dropbear/runbear.py
     judge "启动dropbear后台服务"
 
     echo -e "\n\033[33m请在qpython运行qpython+.py完成后续配置\033[0m\n"
