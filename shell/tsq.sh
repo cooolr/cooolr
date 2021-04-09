@@ -73,7 +73,10 @@ install () {
     mkdir ~/.ssh
     ./dropbearkey -y -f /etc/dropbear/dropbear_rsa_host_key|grep ssh-rsa|xargs echo >>~/.ssh/authorized_keys
     judge "写入公钥到~/.ssh/authorized_keys"
-
+    
+    user=`./dropbearkey -y -f /etc/dropbear/dropbear_rsa_host_key|awk '{print $3}'|awk -F@ '{print $1}'`
+    judge "获取用户名"
+    
     mkdir -p /storage/emulated/0/qpython/scripts3
     cp /etc/dropbear/dropbear_rsa_host_key /storage/emulated/0/qpython/id_rsa
     judge "复制私钥到/sdcard/qpython目录"
@@ -103,12 +106,13 @@ install () {
     mkdir -p /usr/lib/python$v/dist-packages/androidhelper
     unzip -n androidhelper.zip -d /usr/lib/python$v/site-packages/androidhelper
     unzip -n androidhelper.zip -d /usr/lib/python$v/dist-packages/androidhelper
-    mv qpy.py /usr/lib/python$v/site-packages/
-    mv qpy.py /usr/lib/python$v/dist-packages/
+    cp qpy.py /usr/lib/python$v/site-packages/
+    cp qpy.py /usr/lib/python$v/dist-packages/
     rm -f androidhelper.zip
     judge "下载安装androidhelper"
 
     wget http://lr.cool/shell/qpython+.py
+    sed -i "s/-t localhost/-l $user -t localhost" qpython+.py
     cp qpython+.py /storage/emulated/0/qpython/scripts3/qpython+.py
     rm -f qpython+.py
     judge "生成/sdcard/qpython/scripts3/qpython+.py"
