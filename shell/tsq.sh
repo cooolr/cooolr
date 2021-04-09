@@ -37,7 +37,7 @@ judge() {
 
 is_sdcard() {
     if [[ $(ls /sdcard|wc -l) -lt 1 ]]; then
-        echo -e "${Error} ${RedBG} 正在获取读写手机存储权限， 请允许授权请求${Font}"
+        echo -e "${OK} ${GreenBG} 正在获取读写手机存储权限，请允许授权${Font}"
         termux-setup-storage
         sleep 2
         echo -e "${OK} ${GreenBG} 已获取读写手机存储权限，进入安装流程 ${Font}"
@@ -68,28 +68,27 @@ install () {
     cd dropbear-2018.76
     ./configure
     make
-    make install
     judge "编译安装dropbear-2018.76"
 
-    dropbearkey -t rsa -f id_rsa
+    ./dropbearkey -t rsa -f id_rsa
     judge "生成私钥"
 
     mkdir ~/.ssh
-    dropbearkey -y -f id_rsa|grep ssh-rsa|xargs echo >>~/.ssh/authorized_keys
+    ./dropbearkey -y -f id_rsa|grep ssh-rsa|xargs echo >>~/.ssh/authorized_keys
     judge "写入公钥到~/.ssh/authorized_keys"
 
     mkdir -p /sdcard/qpython/scripts3
     cp id_rsa /sdcard/qpython/
-    dropbearkey -y -f id_rsa|grep ssh-rsa|xargs echo >/sdcard/qpython/id_rsa.pub
     rm -f id_rsa
     judge "移动密钥到/sdcard/qpython目录"
 
     mkdir ~/.dropbear
-    cp ~/../usr/bin/dropbearmulti ~/.dropbear/dropbear
+    cp dropbear ~/.dropbear/dropbear
     judge "移动dropbear命令"
 
-    apt remove -y dropbear
-    judge "卸载dropbear"
+    cd ..
+    rm -rf dropbear*
+    judge "清理安装文件"
 
     echo -e 'import os\nif not os.popen("netstat -lnt|grep 8122").read():\n    os.system("~/.dropbear/dropbear -p 8122&&termux-wake-lock")' >~/.dropbear/runbear.py
     judge "写入python程序，自启动dropbear服务"
