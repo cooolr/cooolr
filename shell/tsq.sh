@@ -55,6 +55,7 @@ install () {
     apt update
     judge "更新apt软件包列表"
 
+    apt install -y python3-pip
     apt install -y wget dropbear python
     judge "安装dropbear依赖和python环境"
 
