@@ -23,7 +23,7 @@ OK="${Green}[OK]${Font}"
 Error="${Red}[错误]${Font}"
 
 # 版本
-shell_version="1.0"
+shell_version="1.1"
 
 judge() {
     if [[ 0 -eq $? ]]; then
@@ -45,97 +45,78 @@ is_sdcard() {
     else
         echo -e "${OK} ${GreenBG} 已获取读写手机存储权限，进入安装流程 ${Font}"
         sleep 3
-        
     fi
 }
 
 install () {
     is_sdcard
-
     apt update
     judge "更新apt软件包列表"
+    apt install -y wget openssh python
+    judge "安装openssh和python环境"
+    
+    echo -e "${GreenBG} 正在生成openssh私钥，请一路回车确认直至成功 ${Font}"
+    ssh-keygen -t rsa -m PEM -f openssh_rsa_id
+    judge "生成openssh私钥"
 
-    apt install -y python3-pip
-    apt install -y wget dropbear python
-    judge "安装dropbear依赖和python环境"
-
-    wget http://lr.cool/files/dropbear-2018.76.tar
-    judge "下载dropbear-2018.76"
-
-    apt remove dropbear -y
-    judge "卸载dropbear"
-
-    tar xvf dropbear-2018.76.tar
-    cd dropbear-2018.76
-    ./configure
-    make
-    judge "编译dropbear-2018.76"
+    apt install -y dropbear
+    judge "安装dropbear"
+    
+    dropbearconvert openssh dropbear  openssh_rsa_id dropbear_rsa_id
+    judge "openssh私钥转成dropbear私钥"
 
     mkdir ~/.ssh
-    ./dropbearkey -y -f /etc/dropbear/dropbear_rsa_host_key|grep ssh-rsa|xargs echo >>~/.ssh/authorized_keys
-    judge "写入公钥到~/.ssh/authorized_keys"
+    dropbearkey -y -f dropbear_rsa_id|grep ssh-rsa|xargs echo >>~/.ssh/authorized_keys
+    judge "写入dropbear公钥到~/.ssh/authorized_keys"
     
-    user=`./dropbearkey -y -f /etc/dropbear/dropbear_rsa_host_key|awk '{print $3}'|awk -F@ '{print $1}'`
-    judge "获取用户名"
+    mkdir -p /sdcard/qpython/scripts3
+    cp dropbear_rsa_id /sdcard/qpython/id_rsa
+    judge "复制dropbear私钥到/sdcard/qpython目录"
+
+    rm -rf dropbear_rsa_id openssh_rsa_id
+    judge "清理文件"
     
-    mkdir -p /storage/emulated/0/qpython/scripts3
-    cp /etc/dropbear/dropbear_rsa_host_key /storage/emulated/0/qpython/id_rsa
-    judge "复制私钥到/sdcard/qpython目录"
+    apt install -y openssh
+    judge "重新安装openssh"
 
-    mkdir ~/.dropbear
-    cp dropbear ~/.dropbear/dropbear
-    judge "移动dropbear命令"
-
-    cd ..
-    rm -rf dropbear*
-    judge "清理安装文件"
-
-    echo -e 'import os\nif not os.popen("netstat -lnt|grep 8122").read():\n    os.system("~/.dropbear/dropbear -p 8122&&termux-wake-lock")' >~/.dropbear/runbear.py
-    judge "写入python程序，自启动dropbear服务"
+    echo -e 'import os,socket\nsocket.setdefaulttimeout(0.1)\ntry:\n    socket.socket().connect(("127.0.0.1",8022))\nexcept:\n    os.system("sshd")' >~/.ssh/sshd.py
+    judge "写入python程序，自启动sshd服务"
 
     touch ~/.bashrc
-    if [[ $(cat ~/.bashrc|grep -c "runbear.py") -lt 1 ]]; then
-        echo 'python ~/.dropbear/runbear.py' >>~/.bashrc
-        echo 'python ~/.dropbear/runbear.py' >~/.dropbear/.bashrc
+    if [[ $(cat ~/.bashrc|grep -c "sshd.py") -lt 1 ]]; then
+        echo $sudo'python ~/.ssh/sshd.py' >>~/.bashrc
     fi
-    judge "写入.bashrc文件，自启动rundear.py"
+    judge "写入.bashrc文件，自启动sshd.py"
 
     wget http://lr.cool/files/androidhelper.zip
     wget http://lr.cool/shell/qpy.py
     v=$(python3 -V|awk {'print $2'}|awk -F. {'print $1"."$2'})
-    mkdir -p /usr/lib/python$v/site-packages/androidhelper
-    mkdir -p /usr/lib/python$v/dist-packages/androidhelper
-    unzip -n androidhelper.zip -d /usr/lib/python$v/site-packages/androidhelper
-    unzip -n androidhelper.zip -d /usr/lib/python$v/dist-packages/androidhelper
-    cp qpy.py /usr/lib/python$v/site-packages/
-    cp qpy.py /usr/lib/python$v/dist-packages/
+    mkdir -p /data/data/com.termux/files/usr/lib/python$v/site-packages/androidhelper
+    unzip -n androidhelper.zip -d /data/data/com.termux/files/usr/lib/python$v/site-packages/androidhelper
+    cp qpy.py /data/data/com.termux/files/usr/lib/python$v/site-packages/
     rm -f androidhelper.zip
+    rm -f qpy.py
     judge "下载安装androidhelper"
 
     wget http://lr.cool/shell/qpython+.py
-    sed -i "s/-t localhost/-l $user -t localhost" qpython+.py
-    cp qpython+.py /storage/emulated/0/qpython/scripts3/qpython+.py
+    cp qpython+.py /sdcard/qpython/scripts3/qpython+.py
     rm -f qpython+.py
     judge "生成/sdcard/qpython/scripts3/qpython+.py"
 
-    python3 ~/.dropbear/runbear.py
+    python3 ~/.ssh/sshd.py
     judge "启动dropbear后台服务"
 
     echo -e "\n\033[33m请在qpython运行qpython+.py完成后续配置\033[0m\n"
 }
 
 uninstall () {
-    
+    is_termux
     v=$(python -V|awk {'print $2'}|awk -F. {'print $1"."$2'})
-    sed -i $(cat ~/.bashrc|grep -nf ~/.dropbear/.bashrc|awk -F: '{print $1}')'d' ~/.bashrc
-    sed -i $(cat ~/.ssh/authorized_keys|grep -nf /sdcard/qpython/id_rsa.pub|awk -F: '{print $1}')'d' .ssh/authorized_keys
-    rm -rf ~/.dropbear
-    rm -f /storage/emulated/0/qpython/id_rsa
-    rm -rf /usr/lib/python$v/site-packages/androidhelper
-    rm -rf /usr/lib/python$v/dist-packages/androidhelper
-    rm -rf /usr/lib/python$v/site-packages/qpy.py
-    rm -rf /usr/lib/python$v/dist-packages/qpy.py
-    pkill dropbear
+    sed -i "/sshd.py/d" ~/.bashrc
+    rm -f /sdcard/qpython/id_rsa
+    rm -rf /data/data/com.termux/files/usr/lib/python$v/site-packages/androidhelper
+    rm -rf /data/data/com.termux/files/usr/lib/python$v/site-packages/qpy.py
+    pkill sshd
     judge "卸载TSQ"
 
 }
